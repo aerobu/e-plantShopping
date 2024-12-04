@@ -1,9 +1,12 @@
 import React, { useState,useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
+import addItem from './CartSlice';
+
 function ProductList() {
     const [showCart, setShowCart] = useState(false); 
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+    const [addedToCart, setAddedToCart] = useState([]); // State to store the items added to the cart
 
     const plantsArray = [
         {
@@ -241,6 +244,13 @@ const handlePlantsClick = (e) => {
     setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
     setShowCart(false); // Hide the cart when navigating to About Us
 };
+const handleAddToCart = (plant) => {
+    dispatch(addItem(plant));
+    setAddedToCart((prevState) => ({
+        ...prevState,
+        [plant.name]: true,
+    }))
+};
 
    const handleContinueShopping = (e) => {
     e.preventDefault();
@@ -276,11 +286,11 @@ const handlePlantsClick = (e) => {
                             {
                                 category.plants.map((plant, plantIndex) => (
                                     <div key={plantIndex} className="product-card">
-                                        <img src={plant.image} alt={plant.name} />
-                                        <h3>{plant.name}</h3>
+                                        <img className="product-image" src={plant.image} alt={plant.name} />
+                                        <h3 className="product-title">{plant.name}</h3>
                                         <p>{plant.description}</p>
                                         <p>{plant.cost}</p>
-                                        <button>Add to Cart</button>
+                                        <button className="product-button">Add to Cart</button>
                                     </div>
                                 ))
                             }
